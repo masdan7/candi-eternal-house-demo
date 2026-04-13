@@ -10,8 +10,8 @@
     body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
     #ui {
       position: absolute; top: 15px; left: 15px; color: white; 
-      background: rgba(0,0,0,0.75); padding: 15px; border-radius: 12px; 
-      z-index: 100; width: 320px;
+      background: rgba(0,0,0,0.8); padding: 18px; border-radius: 12px; 
+      z-index: 100; width: 340px;
     }
     button {
       margin: 10px 0; padding: 14px 20px; font-size: 17px; 
@@ -19,75 +19,101 @@
       cursor: pointer; width: 100%; font-weight: bold;
     }
     button:hover { background: #c1121f; }
+    .status { margin-top: 10px; font-size: 14px; color: #ffff00; }
   </style>
 </head>
 <body>
 
   <a-scene physics="driver: ammo; debug: false;" background="color: #87CEEB">
     
-    <!-- Sky -->
     <a-sky color="#87CEEB"></a-sky>
 
     <!-- Lighting -->
     <a-light type="ambient" color="#BBBBBB" intensity="0.8"></a-light>
-    <a-light type="directional" position="5 15 10" intensity="1" cast-shadow="true"></a-light>
+    <a-light type="directional" position="5 15 10" intensity="1"></a-light>
 
-    <!-- Lantai Rumah -->
-    <a-plane static-body position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#555555"></a-plane>
+    <!-- Lantai -->
+    <a-plane static-body position="0 0 0" rotation="-90 0 0" width="25" height="25" color="#555555"></a-plane>
 
-    <!-- === RUMAH PRIMITIVE (Hari 2) === -->
-    
+    <!-- === RUMAH PRIMITIVE === -->
     <!-- Dinding Utama -->
-    <a-box static-body position="0 3 -8" width="12" height="6" depth="10" color="#E0C9A8"></a-box>
+    <a-box id="house" static-body position="0 3.5 -8" width="12" height="7" depth="10" color="#E0C9A8"></a-box>
     
     <!-- Atap -->
-    <a-cone static-body position="0 7 -8" radius-bottom="7" radius-top="0" height="3" color="#8B4513"></a-cone>
+    <a-cone static-body position="0 8 -8" radius-bottom="7.5" radius-top="0" height="3.5" color="#8B4513"></a-cone>
     
     <!-- Pintu -->
-    <a-box position="-2 2 -3" width="1.5" height="3" depth="0.2" color="#4A2C0B"></a-box>
+    <a-box position="-2 2 -3.1" width="1.8" height="3.5" depth="0.3" color="#4A2C0B"></a-box>
     
-    <!-- Jendela 1 -->
-    <a-box position="3 3 -3" width="2" height="2" depth="0.2" color="#87CEEB"></a-box>
-    <!-- Jendela 2 -->
-    <a-box position="-4 3 -8" width="2" height="2" depth="0.2" color="#87CEEB"></a-box>
+    <!-- Jendela -->
+    <a-box position="3.5 3.5 -3" width="2.2" height="2.2" depth="0.3" color="#87CEEB"></a-box>
+    <a-box position="-4.5 3.5 -8" width="2" height="2" depth="0.3" color="#87CEEB"></a-box>
 
-    <!-- Furniture Sederhana (bisa jatuh saat gempa) -->
-    <!-- Meja -->
-    <a-box dynamic-body position="2 1.5 -6" width="3" height="0.1" depth="2" color="#A0522D"></a-box>
-    <!-- Kursi 1 -->
-    <a-box dynamic-body position="1 1 -5" width="0.8" height="1" depth="0.8" color="#8B5A2B"></a-box>
-    <!-- Kursi 2 -->
-    <a-box dynamic-body position="3 1 -7" width="0.8" height="1" depth="0.8" color="#8B5A2B"></a-box>
-    <!-- Lemari -->
-    <a-box static-body position="-5 2.5 -10" width="1.5" height="4" depth="1" color="#6B4E31"></a-box>
+    <!-- Furniture yang bisa jatuh saat gempa -->
+    <a-box id="table" dynamic-body position="2 1.8 -6" width="3" height="0.15" depth="2" color="#A0522D"></a-box>
+    <a-box id="chair1" dynamic-body position="0.5 1.2 -5" width="0.8" height="1" depth="0.8" color="#8B5A2B"></a-box>
+    <a-box id="chair2" dynamic-body position="3.5 1.2 -7" width="0.8" height="1" depth="0.8" color="#8B5A2B"></a-box>
+    <a-box id="cabinet" dynamic-body position="-5 2.8 -10" width="1.6" height="4" depth="1" color="#6B4E31"></a-box>
 
-    <!-- Teks Judul di Langit -->
-    <a-entity position="0 8 -12" text="value: 🏠 Candi House Guardian\nEternal Policy Demo; align: center; color: #ffffff; width: 10;"></a-entity>
-
+    <!-- Teks Judul -->
+    <a-entity position="0 10 -15" text="value: 🏠 Candi House Guardian\nEternal Policy Demo; align: center; color: #ffffff; width: 12;"></a-entity>
   </a-scene>
 
   <!-- UI Panel -->
   <div id="ui">
     <h2>🏠 Candi Eternal Policy</h2>
-    <p><strong>Demo Rumah Simulator (Hari 2)</strong></p>
+    <p><strong>Demo Rumah Simulator (Hari 3)</strong></p>
     <button onclick="simulateEarthquake()">🔄 Simulasi Gempa</button>
     <button onclick="simulateFire()">🔥 Simulasi Kebakaran</button>
     <button onclick="resetScene()">🔄 Reset Rumah</button>
+    <div id="status" class="status"></div>
   </div>
 
   <script>
+    const statusEl = document.getElementById('status');
+
     function simulateEarthquake() {
-      alert("🔄 Simulasi Gempa sedang dijalankan...\n\n(Rumah akan bergoyang + furniture jatuh di versi berikutnya)");
-      // Kita akan aktifkan physics goyang besok (Hari 3)
+      statusEl.textContent = "🔄 Gempa sedang terjadi... (5 detik)";
+
+      const house = document.getElementById('house');
+      const table = document.getElementById('table');
+      const chair1 = document.getElementById('chair1');
+      const chair2 = document.getElementById('chair2');
+      const cabinet = document.getElementById('cabinet');
+
+      // Efek goyang rumah
+      house.setAttribute('animation', {
+        property: 'position',
+        to: '0 3.8 -8',
+        dur: 80,
+        loop: true,
+        dir: 'alternate',
+        easing: 'easeInOutSine'
+      });
+
+      // Beri force acak ke furniture supaya jatuh
+      setTimeout(() => {
+        if (table.body) table.body.applyImpulse(new Ammo.btVector3(0, 8, 0), new Ammo.btVector3(0,0,0));
+        if (chair1.body) chair1.body.applyImpulse(new Ammo.btVector3(3, 5, 2), new Ammo.btVector3(0,0,0));
+        if (chair2.body) chair2.body.applyImpulse(new Ammo.btVector3(-4, 6, -1), new Ammo.btVector3(0,0,0));
+        if (cabinet.body) cabinet.body.applyImpulse(new Ammo.btVector3(2, 10, 5), new Ammo.btVector3(0,0,0));
+      }, 300);
+
+      // Stop animasi setelah 5 detik
+      setTimeout(() => {
+        house.removeAttribute('animation');
+        statusEl.textContent = "✅ Simulasi Gempa selesai";
+        setTimeout(() => statusEl.textContent = "", 3000);
+      }, 5000);
     }
 
     function simulateFire() {
-      alert("🔥 Simulasi Kebakaran sedang dijalankan...\n\n(Efek api akan ditambahkan di versi berikutnya)");
+      statusEl.textContent = "🔥 Simulasi Kebakaran sedang dijalankan... (masih dalam pengembangan)";
+      setTimeout(() => statusEl.textContent = "", 4000);
     }
 
     function resetScene() {
-      alert("Rumah telah di-reset ke kondisi awal.");
-      location.reload(); // sementara pakai reload
+      location.reload();
     }
   </script>
 
