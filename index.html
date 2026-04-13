@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Candi House Guardian - Eternal Policy Demo</title>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.3/dist/aframe-physics-system.min.js"></script>
+  
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    #ui {
+      position: absolute; top: 15px; left: 15px; color: white; 
+      background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; 
+      z-index: 100; max-width: 320px;
+    }
+    button {
+      margin: 8px 0; padding: 12px 20px; font-size: 16px; 
+      background: #e63939; color: white; border: none; border-radius: 8px; 
+      cursor: pointer; width: 100%;
+    }
+    button:hover { background: #c1121f; }
+  </style>
+</head>
+<body>
+
+  <a-scene physics="driver: ammo; debug: false;" background="color: #87CEEB">
+    <!-- Sky -->
+    <a-sky color="#87CEEB"></a-sky>
+
+    <!-- Lighting -->
+    <a-light type="ambient" color="#BBBBBB"></a-light>
+    <a-light type="directional" position="5 10 5" intensity="0.8"></a-light>
+
+    <!-- Lantai -->
+    <a-plane static-body position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#555555"></a-plane>
+
+    <!-- Teks Selamat Datang -->
+    <a-entity position="0 4 -8" text="value: Candi House Guardian\nEternal Policy Demo; align: center; color: #ffffff; width: 8;"></a-entity>
+    <a-entity position="0 2.5 -8" text="value: Klik tombol di bawah untuk simulasi risiko; align: center; color: #ffff00; width: 6;"></a-entity>
+
+  </a-scene>
+
+  <!-- UI Overlay -->
+  <div id="ui">
+    <h2>🏠 Candi Eternal Policy</h2>
+    <p><strong>Demo Rumah Simulator</strong></p>
+    <button onclick="simulateEarthquake()">🔄 Simulasi Gempa</button>
+    <button onclick="simulateFire()">🔥 Simulasi Kebakaran</button>
+    <button onclick="resetScene()">🔄 Reset Rumah</button>
+  </div>
+
+  <script>
+    function simulateEarthquake() {
+      alert("Simulasi Gempa sedang dijalankan... (akan dikembangkan di Hari 2-3)");
+      // nanti kita tambah physics shake di sini
+    }
+
+    function simulateFire() {
+      alert("Simulasi Kebakaran sedang dijalankan... (akan dikembangkan di Hari 4-5)");
+    }
+
+    function resetScene() {
+      alert("Rumah di-reset ke kondisi awal.");
+    }
+  </script>
+
+</body>
+</html>
